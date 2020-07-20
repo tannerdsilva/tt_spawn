@@ -1,0 +1,16 @@
+{
+  "object": {
+    "pins": [
+      {
+        "package": "Ctt_spawn",
+        "repositoryURL": "https://github.com/tannerdsilva/Ctt_spawn.git",
+        "state": {
+          "branch": null,
+          "revision": "75b7e09053e2546102517c75394923f4e97bbf34",
+          "version": "1.0.3"
+        }
+      }
+    ]
+  },
+  "version": 1
+}
