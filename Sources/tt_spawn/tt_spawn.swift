@@ -29,10 +29,22 @@ enum tt_spawn_error:Error {
 	case system_func_clone_error
 }
 
-//primary spawn function
+/* ---- primary spawn function ----
+arguments:
+
+ - path:			The path to the executable that will be launched as the `workload process`
+ - arguments:		The command arguments that will be passed to the executable.
+ - environment:		The environment variables that are to be assigned to the workload process before it launches
+ - workingDirectory	The path to the directory that shall be assigned as the *working directory* of the process before it launches
+ - stdin			The posix pipe that shall be *read* for data as the standard input for the workload process.
+ - stdout			The posix pipe that shall be *written* to as the standard output for the workload process.
+ - stderr			The posix pipe that shall be *written* to as the standard output for the workload process.
+ - notify			The posix pipe that shall be *written* to as the workload process executes. Event flags are written to this pipe when various events happen with the process. These events include process launches, process exits, and data output line notifiers.
+*/
+
 public func tt_spawn(path:String, arguments:[String], environment:[String:String], workingDirectory:String, stdin:PosixSystemPipe?, stdout:PosixSystemPipe?, stderr:PosixSystemPipe?, notify:PosixSystemPipe) throws -> (process:pid_t, stack:UnsafeRawPointer) {
 	//set up the tt_pipe that is used for the standard input channel
-	var in_pipe:tt_pipe = tt_pipe()
+	var in_pipe:tt_pipe = tt_pipe() //default values are unknown, the initialized values are defined in the below if statement
 	if stdin != nil {
 		in_pipe.writing = stdin!.writing
 		in_pipe.reading = stdin!.reading
@@ -41,7 +53,7 @@ public func tt_spawn(path:String, arguments:[String], environment:[String:String
 		in_pipe.reading = -1
 	}
 	//set up the tt_pipe that is used for the standard output channel
-	var out_pipe:tt_pipe = tt_pipe()
+	var out_pipe:tt_pipe = tt_pipe() //default values are unknown, the initialized values are defined in the below if statement
 	if stdout != nil {
 		out_pipe.writing = stdout!.writing
 		out_pipe.reading = stdout!.reading
@@ -50,7 +62,7 @@ public func tt_spawn(path:String, arguments:[String], environment:[String:String
 		out_pipe.reading = -1
 	}
 	//set up the tt_pipe that is used for the standard error channel
-	var err_pipe:tt_pipe = tt_pipe()
+	var err_pipe:tt_pipe = tt_pipe() //default values are unknown, the initialized values are defined in the below if statement
 	if stderr != nil {
 		err_pipe.writing = stderr!.writing
 		err_pipe.reading = stderr!.reading
